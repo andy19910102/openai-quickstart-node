@@ -5,9 +5,11 @@ import styles from "./index.module.css";
 export default function Home() {
   const [animalInput, setAnimalInput] = useState("");
   const [result, setResult] = useState();
+  console.log("[文字輸入]", animalInput);
 
   async function onSubmit(event) {
     event.preventDefault();
+    setResult("等待回應中...");
     try {
       const response = await fetch("/api/generate", {
         method: "POST",
@@ -24,7 +26,7 @@ export default function Home() {
 
       setResult(data.result);
       setAnimalInput("");
-    } catch(error) {
+    } catch (error) {
       // Consider implementing your own error handling logic here
       console.error(error);
       alert(error.message);
@@ -39,17 +41,10 @@ export default function Home() {
       </Head>
 
       <main className={styles.main}>
-        <img src="/dog.png" className={styles.icon} />
-        <h3>Name my pet</h3>
+        <h3>Uninus 智能客服</h3>
         <form onSubmit={onSubmit}>
-          <input
-            type="text"
-            name="animal"
-            placeholder="Enter an animal"
-            value={animalInput}
-            onChange={(e) => setAnimalInput(e.target.value)}
-          />
-          <input type="submit" value="Generate names" />
+          <textarea className="form-control" rows="8" name="animal" onChange={(e) => setAnimalInput(e.target.value)} value={animalInput} placeholder={"Type here..."}></textarea>
+          <input type="submit" value="Send" />
         </form>
         <div className={styles.result}>{result}</div>
       </main>
